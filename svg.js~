@@ -1,0 +1,37 @@
+var pic = document.getElementById("vimage");
+console.log("PIC: ", pic);
+var cl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+console.log("cl: ", cl);
+
+cl.setAttribute("cx", "0");
+cl.setAttribute("cy", "0");
+cl.setAttribute("r", "200");
+cl.setAttribute("fill", "purple");
+cl.setAttribute("stroke", "pink");
+console.log("Attribute cx changed to 500");
+
+pic.appendChild(cl);
+console.log("Child appended.")
+
+/*
+var change = function(e){
+    pic = this;
+    this.setAttribute("fill","green");
+    console.log("Color changed to green.");
+}
+*/
+
+var drawDot(xCor, yCor){
+    cl.setAttribute("cx", "0");
+    cl.setAttribute("cy", "0");
+    cl.setAttribute("r", "20");
+    cl.setAttribute("fill", "pink");
+    cl.setAttribute("stroke", "pink");
+}
+var clicked = function(e){
+    if(e.toElement == this){
+	drawDot(e.offsetX, e.offsetY);
+    }
+}
+
+pic.addEventListener("click", clicked);
