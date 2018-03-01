@@ -1,3 +1,8 @@
+// Samantha Ngo
+// Softdev -- Period 7
+// HW07
+// 2018-03-01
+
 var pic = document.getElementById("vimage");
 console.log("PIC: ", pic);
 var cl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -33,10 +38,11 @@ var clearBoard = function(){
     }
 }
 
-console.log("clearboard tests:");
-clearBoard()
+// console.log("clearboard tests:");
+// clearBoard()
 
 var drawDot = function(xCor, yCor){
+    cl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     cl.setAttribute("cx", String(xCor));
     cl.setAttribute("cy", String(yCor));
     cl.setAttribute("r", "20");
@@ -45,6 +51,24 @@ var drawDot = function(xCor, yCor){
     console.log("Circle drawn.");
     x = cl
     pic.appendChild(x);
+    console.log("Child appended.");
+    console.log("On the board: ", pic.children);
+    lastCor = [xCor, yCor];
+    return lastCor;
+}
+
+var drawLine = function(circlexCor, circleyCor){
+    cl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    cl.setAttribute("cx", String(circlexCor));
+    cl.setAttribute("cy", String(circleyCor));
+    cl.setAttribute("r", "20");
+    cl.setAttribute("fill", "pink");
+    cl.setAttribute("stroke", "pink");
+    console.log("Circle drawn.");
+    x = cl
+    pic.appendChild(x);
+    console.log("Child appended.");
+    console.log("On the board: ", pic.children);
     lastCor = [xCor, yCor];
     return lastCor;
 }

@@ -2,18 +2,14 @@
 <html>
   <head>
     <title> SVG Demo </title>
-    <h1> SVG DeMo </h1>
-    <h3> by Samantha Ngo </h3>
   </head>
   <body>
-    <button type="button" id="clear">Clear the Board!</button><br><br>
    <svg id="vimage" height="500" width="500" style="border: 1px solid;">
 
       <circle cx="250" cy="250" r="75" fill="yellow" stroke="black"/>
       <rect x="100" y="100" width="300" height="75" fill="blue"/>
 
    </svg>
-   
    <script src="svg.js"></script>
   </body>
 </html>
