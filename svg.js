@@ -9,7 +9,7 @@ var cl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
 var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
 console.log("cl: ", cl);
 
-/*
+/* NOTES & CODE
 cl.setAttribute("cx", "0");
 cl.setAttribute("cy", "0");
 cl.setAttribute("r", "200");
@@ -19,8 +19,7 @@ console.log("Attribute cx changed to 200");
 
 pic.appendChild(cl);
 console.log("Child appended.")
-*/
-/*
+
 var change = function(e){
     pic = this;
     this.setAttribute("fill","green");
@@ -28,9 +27,11 @@ var change = function(e){
 }
 */
 
+// For drawing lines
 var lastX = null;
 var lastY = null;
 
+// Clears the board
 var clearBoard = function(){
     console.log(pic);
     objectsLeft = pic.children.length;
@@ -49,11 +50,24 @@ var clearBoard = function(){
 // console.log("clearboard tests:");
 // clearBoard()
 
+// Activate listener for clear button
 eraser = document.getElementById("clear");
 console.log("ERASER: ", eraser);
 eraser.addEventListener("click", clearBoard);
 
+// Draws a new dot and connects it to the last one
 var drawDot = function(xCor, yCor){
+    if (!(lastX == null && lastY == null)){
+	drawBlackLine(lastX, lastY, xCor, yCor);
+	cl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+	cl.setAttribute("cx", String(lastX));
+	cl.setAttribute("cy", String(lastY));
+	cl.setAttribute("r", "20");
+	cl.setAttribute("fill", "pink");
+	cl.setAttribute("stroke", "pink");
+	console.log("Circle drawn.");
+	pic.appendChild(cl);
+    }
     cl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
     cl.setAttribute("cx", String(xCor));
     cl.setAttribute("cy", String(yCor));
@@ -61,19 +75,18 @@ var drawDot = function(xCor, yCor){
     cl.setAttribute("fill", "pink");
     cl.setAttribute("stroke", "pink");
     console.log("Circle drawn.");
-    x = cl
-    pic.appendChild(x);
+    pic.appendChild(cl);
     console.log("Child appended.");
     console.log("On the board: ", pic.children);
     lastCor = [xCor, yCor];
-    if (!(lastX == null && lastY == null)){
-	drawPinkLine(lastX, lastY, xCor, yCor);
-    }
     lastX = xCor;
     lastY = yCor;
     return lastCor;
 }
 
+// NOT IN USE
+// Draws a pink line to mask lines overlapping circles; does not compensate for
+// overlaps
 var drawPinkLine = function(startX, startY, endX, endY){
     line = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line.setAttribute("x1", String(startX));
@@ -90,7 +103,7 @@ var drawPinkLine = function(startX, startY, endX, endY){
     return lastCor;
 }
 
-// Not working at the moment:
+// Draws a black line given start and end coordinates
 var drawBlackLine = function(startX, startY, endX, endY){
     line = document.createElementNS("http://www.w3.org/2000/svg", "line");
     line.setAttribute("x1", String(startX));
@@ -103,25 +116,11 @@ var drawBlackLine = function(startX, startY, endX, endY){
     pic.appendChild(line);
     console.log("Child appended.");
     console.log("On the board: ", pic.children);
-    cl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    cl.setAttribute("cx", String(xCor));
-    cl.setAttribute("cy", String(yCor));
-    cl.setAttribute("r", "20");
-    cl.setAttribute("fill", "pink");
-    cl.setAttribute("stroke", "pink");
-    console.log("Circle redrawn to cover line .");
-    x = cl
-    pic.appendChild(x);
-    console.log("Child appended.");
-    lastX = xCor;
-    lastY = yCor;
     lastCor = [endX, endY];
     return lastCor;
 }
 
-drawDot(30,30);
-console.log("Dot drawn.");
-
+// Passes the coordinates of the mouse to the drawDot function
 var clicked = function(e){
     console.log("X: ", e.offsetX);
     console.log("Y: ", e.offsetY);
@@ -129,5 +128,6 @@ var clicked = function(e){
     return true;
 }
 
+// Activates listener for board
 pic.addEventListener("click", clicked);
 console.log(pic.children);
