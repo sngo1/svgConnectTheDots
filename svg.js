@@ -6,6 +6,7 @@
 var pic = document.getElementById("vimage");
 console.log("PIC: ", pic);
 var cl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
 console.log("cl: ", cl);
 
 /*
@@ -27,6 +28,9 @@ var change = function(e){
 }
 */
 
+var lastX = null;
+var lastY = null;
+
 var clearBoard = function(){
     console.log(pic);
     objectsLeft = pic.children.length;
@@ -36,10 +40,18 @@ var clearBoard = function(){
 	console.log("Element Removed");
 	objectsLeft -= 1;
     }
+    lastX = null;
+    lastY = null;
+    console.log("Board cleared.");
+    return true;
 }
 
 // console.log("clearboard tests:");
 // clearBoard()
+
+eraser = document.getElementById("clear");
+console.log("ERASER: ", eraser);
+eraser.addEventListener("click", clearBoard);
 
 var drawDot = function(xCor, yCor){
     cl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -54,33 +66,67 @@ var drawDot = function(xCor, yCor){
     console.log("Child appended.");
     console.log("On the board: ", pic.children);
     lastCor = [xCor, yCor];
+    if (!(lastX == null && lastY == null)){
+	drawPinkLine(lastX, lastY, xCor, yCor);
+    }
+    lastX = xCor;
+    lastY = yCor;
     return lastCor;
 }
 
-var drawLine = function(circlexCor, circleyCor){
+var drawPinkLine = function(startX, startY, endX, endY){
+    line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", String(startX));
+    line.setAttribute("y1", String(startY));
+    line.setAttribute("x2", String(endX));
+    line.setAttribute("y2", String(endY));
+    line.setAttribute("stroke", "pink");
+    line.setAttribute("stroke-width", "2");
+    console.log("Dot Connected.");
+    pic.appendChild(line);
+    console.log("Child appended.");
+    console.log("On the board: ", pic.children);
+    lastCor = [endX, endY];
+    return lastCor;
+}
+
+// Not working at the moment:
+var drawBlackLine = function(startX, startY, endX, endY){
+    line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", String(startX));
+    line.setAttribute("y1", String(startY));
+    line.setAttribute("x2", String(endX));
+    line.setAttribute("y2", String(endY));
+    line.setAttribute("stroke", "black");
+    line.setAttribute("stroke-width", "2");
+    console.log("Dot Connected.");
+    pic.appendChild(line);
+    console.log("Child appended.");
+    console.log("On the board: ", pic.children);
     cl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-    cl.setAttribute("cx", String(circlexCor));
-    cl.setAttribute("cy", String(circleyCor));
+    cl.setAttribute("cx", String(xCor));
+    cl.setAttribute("cy", String(yCor));
     cl.setAttribute("r", "20");
     cl.setAttribute("fill", "pink");
     cl.setAttribute("stroke", "pink");
-    console.log("Circle drawn.");
+    console.log("Circle redrawn to cover line .");
     x = cl
     pic.appendChild(x);
     console.log("Child appended.");
-    console.log("On the board: ", pic.children);
-    lastCor = [xCor, yCor];
+    lastX = xCor;
+    lastY = yCor;
+    lastCor = [endX, endY];
     return lastCor;
 }
 
 drawDot(30,30);
-console.log("Dot drawn");
+console.log("Dot drawn.");
 
 var clicked = function(e){
     console.log("X: ", e.offsetX);
     console.log("Y: ", e.offsetY);
-    
     drawDot(e.offsetX, e.offsetY);
+    return true;
 }
 
 pic.addEventListener("click", clicked);
